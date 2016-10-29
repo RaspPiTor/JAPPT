@@ -4,7 +4,7 @@ import sys
 __isatty__=sys.stdout.isatty()
 class Logger():
     def __init__(self, level=0, colour=True):
-        self.colour=bool(colour)
+        self.usecolour=bool(colour)
         if level<1:
             self.level=0
         elif level<2:
@@ -15,15 +15,17 @@ class Logger():
             self.level=0
             self.error('Specified log level(%s) not in allowed levels [0, 1, 2]' % level)
             self.info('Log level 0 assumed')
-    def colourprint(self, msg, colour=1):
-        self.colourprint=lambda msg, colour=1:print(msg)
-        if self.colour:
+    def colour(self, msg, colour=1, bold=False):
+        if self.usecolour:
             if __isatty__:
                 if 'idlelib' not in list(sys.modules):
-                    self.colourprint=lambda msg, colour=1:print('\033[0;%sm%s\x1b[0m' % (colour, msg))
-                else:
-                    self.colourprint=lambda msg, colour=1:print(msg, file=sys.stdout if colour!=31 else sys.stderr)
-        self.colourprint(msg, colour=colour)
+                    return '\033[%s;%sm%s\x1b[0m' % (int(bool(bold)), colour, msg)
+        return msg
+    def colourprint(self, msg, colour=1, bold=False):
+        if colour==31:
+            print(self.colour(msg, colour=colour, bold=bold), file=sys.stderr)
+        else:
+            print(self.colour(msg, colour=colour, bold=bold))
     def info(self, msg):
         if self.level==0:
             msg=[time.strftime('[%H:%M:%S]'),
@@ -48,4 +50,4 @@ if __name__=='__main__':
     logger.info('this is some infomation')
     logger.warning('this is a warning')
     logger.error('this is a critical error')
-    sys.stderr.write('hi')
+    sys.stderr.write('hi\n')
