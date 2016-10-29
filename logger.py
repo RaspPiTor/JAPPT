@@ -19,7 +19,9 @@ class Logger():
         if self.usecolour:
             if __isatty__:
                 if 'idlelib' not in list(sys.modules):
-                    return '\033[%s;%sm%s\x1b[0m' % (int(bool(bold)), colour, msg)
+                    addcolour= '\033[%s;%sm' % (int(bool(bold)), colour)
+                    end='\x1b[0m'
+                    msg=addcolour+msg.replace(end, addcolour)+end
         return msg
     def colourprint(self, msg, colour=1, bold=False):
         if colour==31:
@@ -46,6 +48,7 @@ class Logger():
 
 if __name__=='__main__':
     logger=Logger()
+    print(logger.colour('this is an %s test' % logger.colour('amazing, %s and useful' % logger.colour('sucessful', colour=33, bold=1), colour=32)))
     logger.colourprint('Is a tty: %s' % __isatty__)
     logger.info('this is some infomation')
     logger.warning('this is a warning')
