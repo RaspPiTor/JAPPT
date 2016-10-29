@@ -1,4 +1,4 @@
-import cmd, sys, readline
+import cmd, readline
 import logger
 logger=logger.Logger()
 class JapptShell(cmd.Cmd):
@@ -10,12 +10,14 @@ class JapptShell(cmd.Cmd):
  \___/_/   \_\_|    |_|   |_|
  Just Another Pen Testing Tool
  
- ''',
-                        colour=31, bold=1)
+ ''', colour=31, bold=1)
     intro+=logger.colour('Welcome to JAPTT. Type help or ? to list commands.\n',
                          colour=32, bold=1)
     prompt=logger.colour('(japtt)', 32, bold=1)
     file=None
+    ruler=logger.colour('=', colour=32, bold=1)
+    def emptyline(self):
+        pass
     def do_print(self, args):
         print(args)
     def do_quit(self, args):
