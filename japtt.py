@@ -13,11 +13,13 @@ class JapptShell(cmd.Cmd):
  ''', colour=31, bold=1)
     intro+=logger.colour('Welcome to JAPTT. Type help or ? to list commands.\n',
                          colour=32, bold=1)
-    prompt=logger.colour('(japtt)', 32, bold=1)
+    prompt=logger.colour('(japtt)', 32, bold=1)+logger.colour('>>>', 34, bold=1)
     file=None
     ruler=logger.colour('=', colour=32, bold=1)
     def emptyline(self):
         pass
+    def default(self, line):
+        logger.error('Unknown syntax: '+line)
     def do_print(self, args):
         print(args)
     def do_quit(self, args):
