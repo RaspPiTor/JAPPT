@@ -2,7 +2,7 @@
 import time
 import sys
 __isatty__=sys.stdout.isatty()
-class Logger():
+class Logger:
     def __init__(self, level=0, colour=True):
         self.usecolour=bool(colour)
         if level<1:
