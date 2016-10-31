@@ -16,6 +16,7 @@ class Logger():
             self.error('Specified log level(%s) not in allowed levels [0, 1, 2]' % level)
             self.info('Log level 0 assumed')
     def colour(self, msg, colour=1, bold=False):
+        msg=str(msg)
         if self.usecolour:
             if __isatty__:
                 if 'idlelib' not in list(sys.modules):
@@ -24,10 +25,11 @@ class Logger():
                     msg=addcolour+msg.replace(end, addcolour)+end
         return msg
     def colourprint(self, msg, colour=1, bold=False):
+        #sys.stdout and sys.stderr used for python2 and python3 compatability
         if colour==31:
-            print(self.colour(msg, colour=colour, bold=bold), file=sys.stderr)
+            sys.stderr.write(self.colour(msg, colour=colour, bold=bold)+'\n')
         else:
-            print(self.colour(msg, colour=colour, bold=bold))
+            sys.stdout.write(self.colour(msg, colour=colour, bold=bold)+'\n')
     def info(self, msg):
         if self.level==0:
             msg=[time.strftime('[%H:%M:%S]'),
