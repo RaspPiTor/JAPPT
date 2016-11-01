@@ -1,4 +1,4 @@
-import cmd, readline
+import cmd
 import logger
 logger=logger.Logger()
 class JapptShell(cmd.Cmd):
