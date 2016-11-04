@@ -34,7 +34,7 @@ class JapptShell(cmd.Cmd):
         exit()
     def do_xssencode(self, args):
         'Put inputted javascript into a tag which could cause Cross Site Scripting'
-        print('\n'.join(xssencode(''.join(args))))
+        print('\n'.join(xssencode(args)))
 if __name__ == '__main__':
     try:
         JapptShell().cmdloop()
