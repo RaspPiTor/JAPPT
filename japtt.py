@@ -2,7 +2,6 @@ from XSS.xssencode import xssencode
 from CI.ciencode import ciencode
 
 import cmd
-import shlex
 import logger
 
 logger=logger.Logger()

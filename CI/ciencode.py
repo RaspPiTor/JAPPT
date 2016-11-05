@@ -1,10 +1,6 @@
 import argparse
 import random
 import shlex
-import sys
-parser=argparse.ArgumentParser()
-parser.add_argument('code')
-parser.add_argument('-l', '--language', default='bash')
 def randomdata():
     chars='abcdefghijklmnopqrstuvwxyz0123456789'
     chars+=chars.upper()
