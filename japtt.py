@@ -1,6 +1,8 @@
 from XSS.xssencode import xssencode
+from CI.ciencode import ciencode
 
 import cmd
+import shlex
 import logger
 
 logger=logger.Logger()
@@ -35,6 +37,9 @@ class JapptShell(cmd.Cmd):
     def do_xssencode(self, args):
         'Put inputted javascript into a tag which could cause Cross Site Scripting'
         print('\n'.join(xssencode(args)))
+    def do_ciencode(self, args):
+        'Encode given command into injectable form for different languages'
+        print('\n'.join(ciencode(args)))
 if __name__ == '__main__':
     try:
         JapptShell().cmdloop()
