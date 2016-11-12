@@ -3,7 +3,7 @@ import urllib.robotparser
 import requests
 import time
 
-class RobotParser():
+class RobotParser(object):
     def __init__(self, useragent='RobotParser', ttl=3600):
         self.useragent=useragent
         self.parsers={}
@@ -31,7 +31,7 @@ class RobotParser():
                 print('Removing robots.txt for %s due to cache expiration...' % i)
                 del self.parsers[i]
         if host not in self.parsers:
-            print('Fetching robots.txt...')
+            print('Fetching robots.txt for %s...' % host)
             self.read(url)
         now=self.parsers[host]
         #Check both to stay on the safe side
