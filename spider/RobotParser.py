@@ -1,5 +1,6 @@
 from urllib.parse import urljoin, urlparse
 import urllib.robotparser
+import threading
 import requests
 import time
 
@@ -8,6 +9,7 @@ class RobotParser(object):
         self.useragent=useragent
         self.parsers={}
         self.ttl=ttl
+        self.lock=threading.Lock()
     def read(self, url):
         url=urljoin(url, '/')
         roboturl=urljoin(url, '/robots.txt')
@@ -26,6 +28,7 @@ class RobotParser(object):
         self.parsers[urlparse(r.url).netloc]=rp
     def can_fetch(self, url):
         host=urlparse(url).netloc
+        self.lock.acquire()
         for i in list(self.parsers):
             if (self.parsers[i].mtime()+self.ttl)<time.time():
                 print('Removing robots.txt for %s due to cache expiration...' % i)
@@ -35,4 +38,6 @@ class RobotParser(object):
             self.read(url)
         now=self.parsers[host]
         #Check both to stay on the safe side
-        return now.can_fetch('*', url) and now.can_fetch(self.useragent, url)
+        result=now.can_fetch('*', url) and now.can_fetch(self.useragent, url)
+        self.lock.release()
+        return result
