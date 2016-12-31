@@ -4,7 +4,7 @@ import sys
 import dbm
 class DataBase(object):
     '''A wrapper around the built in dbm library. This class uses json
-to allow for none string data to be stored in the database'''
+to allow for non-string data to be stored in the database'''
     def __init__(self, dbname, maxcache=10**8):
         '''Create a database using given database name and use a cache with a
 specified maximium size
@@ -16,6 +16,7 @@ specified maximium size
     def __setitem__(self, key, value):
         self.checksize()
         self.cache[key]=value
+        self.commit()
     def __getitem__(self, key):
         self.checksize()
         with suppress(KeyError):
@@ -60,4 +61,5 @@ specified maximium size
         for key in self.cache:
             self.db[json.dumps(key)]=json.dumps(self.cache[key])
         self.db.close()
+        del self.cache
         self.__init__(self.dbname, self.maxcache)
