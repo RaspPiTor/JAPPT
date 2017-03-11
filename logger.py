@@ -1,4 +1,5 @@
 #! /usr/bin/env python3
+import platform
 import time
 import sys
 __isatty__=sys.stdout.isatty()
@@ -20,9 +21,10 @@ class Logger(object):
         if self.usecolour:
             if __isatty__:
                 if 'idlelib' not in list(sys.modules):
-                    addcolour= '\033[%s;%sm' % (int(bool(bold)), colour)
-                    end='\x1b[0m'
-                    msg=addcolour+msg.replace(end, addcolour)+end
+                    if platform.system()=='Linux':
+                        addcolour= '\033[%s;%sm' % (int(bool(bold)), colour)
+                        end='\x1b[0m'
+                        msg=addcolour+msg.replace(end, addcolour)+end
         return msg
     def colourprint(self, msg, colour=1, bold=False):
         #sys.stdout and sys.stderr used for python2 and python3 compatability
