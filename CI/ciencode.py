@@ -30,4 +30,4 @@ def ciencode(args):
     except SystemExit:
         return
     if args.language=='bash':
-        return bashiencode(args)
+        print('\n'.join(bashiencode(args)))
